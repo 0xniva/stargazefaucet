@@ -1,0 +1,23 @@
+name: Stargaze Faucet Request
+
+on:
+  workflow_dispatch:
+
+jobs:
+  request-faucet:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout kode repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'  # Pastikan pakai Node.js versi terbaru
+
+      - name: Install dependencies
+        run: npm install axios
+
+      - name: Jalankan request.js
+        run: node faucet.js
