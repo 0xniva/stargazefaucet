@@ -32,9 +32,13 @@ async function requestFaucet(address, attempt = 1) {
 
         if (response.data && response.data.status === "ok" && response.data.result) {
             console.log(`✅ Tx Hash: https://testnet.ping.pub/stargaze/tx/${response.data.result.txhash}`);
-        } else if (response.data.status === "error" && response.data.message.includes("account sequence mismatch")) {
+        } else if (
+            response.data.status === "error" && 
+            (response.data.message.includes("account sequence mismatch") || 
+             response.data.message.includes("context deadline exceeded"))
+        ) {
             if (attempt < MAX_RETRIES) {
-                console.warn(`⚠️ Account sequence mismatch detected. Retry attempt ${attempt}/${MAX_RETRIES} after 10 seconds...`);
+                console.warn(`⚠️ Error terdeteksi: "${response.data.message}". Retry ${attempt}/${MAX_RETRIES} setelah 10 detik...`);
                 await delay(RETRY_DELAY);
                 return requestFaucet(address, attempt + 1); // Retry request
             } else {
