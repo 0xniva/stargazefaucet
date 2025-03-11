@@ -11,8 +11,13 @@ jobs:
       - name: Checkout kode repository
         uses: actions/checkout@v3
 
-      - name: Baca address dari file dan jalankan curl
-        run: |
-          ADDRESS=$(cat address.txt | tr -d '[:space:]') # Membaca dan membersihkan spasi
-          echo "Menggunakan Address: $ADDRESS"
-          curl -v "https://faucet.ping.pub/stargaze/send/$ADDRESS"
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install axios
+
+      - name: Jalankan faucet.js
+        run: node faucet.js
